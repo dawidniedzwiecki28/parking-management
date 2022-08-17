@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>edit Cars</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <h2>Edytuj pojazd</h2>
+    <hr/>
+    <!--/*@thymesVar id="car" type="com.niedzwiadek28code.parkingapp.entity.Car"*/-->
+    <form th:object="${car}" th:action="@{/parking/editCar(number=${car.registrationNumber})}" method="post" class="form-control col-4 mb-4">
+        <label>nr rejestracyjny: </label>
+        <input type="text" th:field="*{registrationNumber}" required />
+
+        <hr/>
+        <label>kraj:</label>
+        <input type="text" th:field="*{country}"  />
+        <hr/>
+        <label>przyjazd:</label>
+        <input type="datetime-local" th:field="*{arrivalDate}" required />
+        <hr/>
+        <label>płatność:</label>
+        <input type="checkbox" th:field="*{paymentStatus}" />
+        <hr/>
+        <label>odjazd:</label>
+        <input type="datetime-local" th:field="*{departureDate}" />
+        <hr/>
+        <label>czarna lista:</label>
+        <input type="checkbox" th:field="*{blackList}" />
+        <hr/>
+        <button class="btn btn-primary" type="submit">Zapisz</button>
+    </form>
+    <hr/>
+    <a th:href="@{/parking/list}">Back to list</a>
+
+</div>
+
+</body>
+</html>

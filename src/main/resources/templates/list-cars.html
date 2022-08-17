@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>parking</title>
+    <link rel="stylesheet"
+          type="text/css"
+          href="https://cdn.datatables.net/v/bs4/dt-1.12.1/date-1.1.2/datatables.min.css"/>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+
+    <h2>Samochody na parkingu</h2>
+    <hr/>
+    <a th:href="@{/parking/addCarForm}" class="btn btn-primary mb-2">Dodaj</a>
+    <a th:href="@{/parking/checking}" class="btn btn-primary mb-2">Obchód</a>
+
+    <table class="table table-bordered table-striped" id="car-table">
+        <thead>
+        <tr>
+            <th>Pojazd:</th>
+            <th>Kraj:</th>
+            <th>Płatność:</th>
+            <th>Przyjazd:</th>
+            <th>Odjazd:</th>
+            <th>IsTimeUp?:</th>
+            <th>Akcja:</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--/*@thymesVar id="car" type="com.niedzwiadek28code.parkingapp.entity.Car"*/-->
+        <tr th:each="car: ${cars}">
+            <td th:text="${car.registrationNumber}"></td>
+            <td th:text="${car.country}"></td>
+            <td th:text="${car.paymentStatus}"></td>
+            <td th:text="${car.arrivalDate}"></td>
+            <td th:text="${car.departureDate}"></td>
+            <td th:text="${car.timeUp}"></td>
+            <td>
+                <a th:href="@{/parking/showUpdateForm(number=${car.registrationNumber})}" class="btn btn-info">Edytuj</a>
+                <a th:href="@{/parking/deactivationCar(number=${car.registrationNumber})}" class="btn btn-info">Pojechał</a>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.12.1/date-1.1.2/datatables.min.js"></script>
+<script>
+    $(document).ready(function (){
+        $("#car-table").DataTable();
+    })
+</script>
+
+</body>
+</html>
