@@ -22,11 +22,6 @@ public class ParkingServiceImpl implements ParkingService {
         this.blackListCarRepository = blackListCarRepository;
     }
 
-    public ParkingServiceImpl(final CarRepository repository) {
-        this.repository = repository;
-        this.blackListCarRepository = null;
-    }
-
     @Override
     public RedirectView editCar(String number, Car sourceCar) {
         Car car = repository.findCarByRegistrationNumberContainingIgnoreCase(number);
