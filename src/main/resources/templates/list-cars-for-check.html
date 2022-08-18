@@ -40,9 +40,9 @@
             <td th:text="${car.departureDate}"></td>
             <td th:text="${car.timeUp}"></td>
             <td>
-                <a th:href="@{/parking/addToBlackList(number=${car.registrationNumber})}" class="btn btn-info">BlackList</a>
                 <a th:href="@{/parking/carConfirmation(number=${car.registrationNumber})}" class="btn btn-info">AllRight</a>
                 <a th:href="@{/parking/deactivationCarForCheck(number=${car.registrationNumber})}" class="btn btn-info">DroveAway</a>
+                <a th:href="@{/parking/addToBlackList(number=${car.registrationNumber})}" class="btn btn-info">BlackList</a>
             </td>
 
         </tr>

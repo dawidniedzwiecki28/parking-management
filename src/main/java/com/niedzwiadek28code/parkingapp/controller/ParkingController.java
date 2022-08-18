@@ -1,28 +1,28 @@
 package com.niedzwiadek28code.parkingapp.controller;
 
 import com.niedzwiadek28code.parkingapp.entity.Car;
-import com.niedzwiadek28code.parkingapp.service.CarServiceImpl;
+import com.niedzwiadek28code.parkingapp.service.ParkingServiceImpl;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequestMapping("/parking")
-public class CarController {
-    private final CarServiceImpl carServiceImpl;
+public class ParkingController {
+    private final ParkingServiceImpl carServiceImpl;
 
-    public CarController(CarServiceImpl carServiceImpl) {
+    public ParkingController(ParkingServiceImpl carServiceImpl) {
         this.carServiceImpl = carServiceImpl;
     }
 
     @GetMapping({"/list"})
-    public ModelAndView findActiveCars() {
+    public ModelAndView findCars() {
         return carServiceImpl.findCars();
     }
 
     @GetMapping("/checking")
     public ModelAndView activeCarsForChecking() {
-        return carServiceImpl.activeCarsForChecking();
+        return carServiceImpl.listCarsForChecking();
     }
 
     @GetMapping("/addCarForm")
@@ -32,22 +32,27 @@ public class CarController {
 
     @GetMapping("/showUpdateForm")
     public ModelAndView showUpdateForm(@RequestParam String number) {
-        return carServiceImpl.showUpdateForm(number);
-    }
-
-    @GetMapping("/deactivationCarForCheck")
-    public RedirectView carDeactivationForCheck(String number) {
-        return (carServiceImpl.deleteCar(number));
+        return carServiceImpl.showCarUpdateForm(number);
     }
 
     @GetMapping("/carConfirmation")
     public RedirectView carConfirmation(String number) {
-        return (carServiceImpl.carConfirmation(number));
+        return (carServiceImpl.confirmCar(number));
     }
 
     @GetMapping("/blackListNotify")
     public ModelAndView showBlackListNotify() {
         return carServiceImpl.showBlackListNotify();
+    }
+
+    @GetMapping("/addToBlackList")
+    public RedirectView addToBlackLIst(@RequestParam String number) {
+        return (carServiceImpl.addCarToBlackList(number));
+    }
+
+    @GetMapping("/checkerCleaner")
+    public RedirectView checkerCleaner() {
+        return (carServiceImpl.checkerCleaner());
     }
 
     @PostMapping("/saveCar")
@@ -59,13 +64,10 @@ public class CarController {
     public RedirectView createOrEditCar(@RequestParam String number, @ModelAttribute Car sourceCar) {
         return (carServiceImpl.editCar(number, sourceCar));
     }
-    @GetMapping("/addToBlackList")
-    public RedirectView addToBlackLIst(@RequestParam String number){
-        return (carServiceImpl.addCarToBlackList(number));
-    }
-    @GetMapping("/checkerCleaner")
-    public RedirectView checkerCleaner(){
-        return (carServiceImpl.checkerCleaner());
+
+    @DeleteMapping("/deactivationCarForCheck")
+    public RedirectView deleteCar(String number) {
+        return (carServiceImpl.deleteCar(number));
     }
 
 }

@@ -5,21 +5,20 @@ import com.niedzwiadek28code.parkingapp.dao.CarRepository;
 
 import java.util.List;
 
-public class PaidTimePassChecker {
+public class PaidTimeChecker {
     private final CarRepository repository;
 
-    public PaidTimePassChecker(CarRepository repository) {
+    public PaidTimeChecker(CarRepository repository) {
         this.repository = repository;
     }
 
-    public void checkCarsPaidTime(){
+    public void checkCarsPaidTime() {
         List<Car> carList = repository.findAll();
         for (Car car : carList) {
-
-            if(car.getDepartureDate()==null){
+            if (car.getDepartureDate() == null) {
                 continue;
             }
-            if(car.timeUpChecker()){
+            if (car.timeUpChecker()) {
                 car.setTimeUp(true);
                 repository.save(car);
             }

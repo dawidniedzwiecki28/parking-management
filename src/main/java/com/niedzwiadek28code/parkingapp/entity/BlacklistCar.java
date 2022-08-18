@@ -5,25 +5,19 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 @Entity
 @Table
-public class BlackListCar {
+public class BlacklistCar {
     @Id
     private String registrationNumber;
 
-    public BlackListCar(String registrationNumber) {
+    public BlacklistCar(String registrationNumber) {
         this.registrationNumber = registrationNumber;
     }
 
-    public BlackListCar() {
+    public BlacklistCar() {
     }
 
     public String getRegistrationNumber() {
         return registrationNumber;
     }
 
-    @Override
-    public String toString() {
-        return "BlackListCar{" +
-                "registrationNumber='" + registrationNumber + '\'' +
-                '}';
-    }
 }

@@ -2,7 +2,9 @@ package com.niedzwiadek28code.parkingapp.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -18,6 +20,9 @@ public class Car {
     private boolean timeUp;
     private boolean checker;
 
+    public Car() {
+    }
+
     public Car(String registrationNumber,
                String country,
                LocalDateTime arrivalDate,
@@ -28,16 +33,7 @@ public class Car {
         this.paymentStatus = paymentStatus;
         this.arrivalDate = arrivalDate;
         this.departureDate = departureDate;
-    }
-
-    public Car(String registrationNumber,
-               String country,
-               LocalDateTime arrivalDate,
-               boolean paymentStatus) {
-        this.registrationNumber = registrationNumber.toUpperCase();
-        this.country = country;
-        this.paymentStatus = paymentStatus;
-        this.arrivalDate = arrivalDate;
+        this.checker = false;
     }
 
     public Car(String registrationNumber,
@@ -46,33 +42,35 @@ public class Car {
         this.registrationNumber = registrationNumber;
         this.paymentStatus = paymentStatus;
         this.arrivalDate = arrivalDate;
-    }
-
-    public Car() {
-    }
-
-    public String getRegistrationNumber() {
-        return registrationNumber;
+        this.checker = false;
     }
 
     public void setRegistrationNumber(String registrationNumber) {
-        this.registrationNumber = registrationNumber.toUpperCase();
-    }
-
-    public String getCountry() {
-        return country;
+        this.registrationNumber = registrationNumber;
     }
 
     public void setCountry(String country) {
         this.country = country;
     }
 
-    public LocalDateTime getArrivalDate() {
-        return arrivalDate;
+    public void setPaymentStatus(boolean paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 
     public void setArrivalDate(LocalDateTime arrivalDate) {
         this.arrivalDate = arrivalDate;
+    }
+
+    public String getRegistrationNumber() {
+        return registrationNumber;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public LocalDateTime getArrivalDate() {
+        return arrivalDate;
     }
 
     public LocalDateTime getDepartureDate() {
@@ -87,10 +85,6 @@ public class Car {
         return paymentStatus;
     }
 
-    public void setPaymentStatus(boolean paymentStatus) {
-        this.paymentStatus = paymentStatus;
-    }
-
     public boolean isTimeUp() {
         return timeUp;
     }
@@ -99,25 +93,8 @@ public class Car {
         this.timeUp = timeUp;
     }
 
-    public boolean isChecker() {
-        return checker;
-    }
-
     public void setChecker(boolean checker) {
         this.checker = checker;
-    }
-
-    @Override
-    public String toString() {
-        return "Car{" +
-                "registrationNumber='" + registrationNumber + '\'' +
-                ", country='" + country + '\'' +
-                ", paymentStatus=" + paymentStatus +
-                ", arrivalDate=" + arrivalDate +
-                ", departureDate=" + departureDate +
-                ", timeUp=" + timeUp +
-                ", checker=" + checker +
-                '}';
     }
 
     public void toUpdate(Car sourceCar) {

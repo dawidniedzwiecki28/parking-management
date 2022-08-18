@@ -1,8 +1,8 @@
 package com.niedzwiadek28code.parkingapp.service;
 
-import com.niedzwiadek28code.parkingapp.dao.BlackListCarRepository;
+import com.niedzwiadek28code.parkingapp.dao.BlacklistCarRepository;
 import com.niedzwiadek28code.parkingapp.dao.CarRepository;
-import com.niedzwiadek28code.parkingapp.entity.BlackListCar;
+import com.niedzwiadek28code.parkingapp.entity.BlacklistCar;
 import com.niedzwiadek28code.parkingapp.entity.Car;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
@@ -13,11 +13,11 @@ import java.util.List;
 
 
 @Service
-public class CarServiceImpl implements CarService {
+public class ParkingServiceImpl implements ParkingService {
     private final CarRepository repository;
-    private final BlackListCarRepository blackListCarRepository;
+    private final BlacklistCarRepository blackListCarRepository;
 
-    public CarServiceImpl(final CarRepository repository, final BlackListCarRepository blackListCarRepository) {
+    public ParkingServiceImpl(final CarRepository repository, final BlacklistCarRepository blackListCarRepository) {
         this.repository = repository;
         this.blackListCarRepository = blackListCarRepository;
     }
@@ -39,14 +39,14 @@ public class CarServiceImpl implements CarService {
     @Override
     public RedirectView addCar(Car sourceCar) {
         if (blackListCarRepository.existsByRegistrationNumberContainingIgnoreCase(sourceCar.getRegistrationNumber())) {
-            blackListCarRepository.delete(blackListCarRepository.findBlackListCarByRegistrationNumberContainingIgnoreCase(sourceCar.getRegistrationNumber()));
+            blackListCarRepository.delete(blackListCarRepository.findBlacklistCarByRegistrationNumberContainingIgnoreCase(sourceCar.getRegistrationNumber()));
             repository.save(sourceCar);
             return new RedirectView("blackListNotify");
         }
 
         if (repository.existsByRegistrationNumberContainingIgnoreCase(sourceCar.getRegistrationNumber())) {
             System.out.println("That car is on the parking lof");
-        }else {
+        } else {
             repository.save(sourceCar);
         }
 
@@ -64,7 +64,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public RedirectView carConfirmation(String number) {
+    public RedirectView confirmCar(String number) {
         Car car = repository.findCarByRegistrationNumberContainingIgnoreCase(number);
         car.setChecker(true);
         repository.save(car);
@@ -73,7 +73,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public ModelAndView showUpdateForm(String number) {
+    public ModelAndView showCarUpdateForm(String number) {
         ModelAndView mav = new ModelAndView("update-car-form");
         Car car = repository.findCarByRegistrationNumberContainingIgnoreCase(number);
         mav.addObject("car", car);
@@ -102,7 +102,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public ModelAndView findCars() {
         ModelAndView mav = new ModelAndView("list-cars");
-        PaidTimePassChecker checker = new PaidTimePassChecker(repository);
+        PaidTimeChecker checker = new PaidTimeChecker(repository);
         checker.checkCarsPaidTime();
         List<Car> list = repository.findAll();
         mav.addObject("cars", list);
@@ -111,7 +111,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public ModelAndView activeCarsForChecking() {
+    public ModelAndView listCarsForChecking() {
         ModelAndView mav = new ModelAndView("list-cars-for-check");
         List<Car> carsForCheck = repository.findCarsByCheckerFalse();
         mav.addObject("cars", carsForCheck);
@@ -121,7 +121,7 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public RedirectView addCarToBlackList(String number) {
-        BlackListCar blackListCar = new BlackListCar(number);
+        BlacklistCar blackListCar = new BlacklistCar(number);
         blackListCarRepository.save(blackListCar);
 
         Car car = repository.findCarByRegistrationNumberContainingIgnoreCase(number);
@@ -133,7 +133,7 @@ public class CarServiceImpl implements CarService {
     @Override
     public RedirectView checkerCleaner() {
         List<Car> list = repository.findAll();
-        for (Car car : list){
+        for (Car car : list) {
             car.setChecker(false);
             repository.save(car);
         }

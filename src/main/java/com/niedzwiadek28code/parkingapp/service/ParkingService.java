@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
-public interface CarService {
+public interface ParkingService {
 
-    RedirectView carConfirmation(String number);
+    RedirectView confirmCar(String number);
 
     RedirectView addCar(@ModelAttribute Car sourceCar);
 
@@ -16,7 +16,11 @@ public interface CarService {
 
     RedirectView deleteCar(@RequestParam String number);
 
-    ModelAndView showUpdateForm(@RequestParam String number);
+    RedirectView addCarToBlackList(@RequestParam String number);
+
+    RedirectView checkerCleaner();
+
+    ModelAndView showCarUpdateForm(@RequestParam String number);
 
     ModelAndView addCarForm();
 
@@ -24,9 +28,7 @@ public interface CarService {
 
     ModelAndView findCars();
 
-    ModelAndView activeCarsForChecking();
+    ModelAndView listCarsForChecking();
 
-    RedirectView addCarToBlackList(@RequestParam String number);
 
-    RedirectView checkerCleaner();
 }
