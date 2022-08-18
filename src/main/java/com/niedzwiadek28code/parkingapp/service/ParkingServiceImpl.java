@@ -22,6 +22,11 @@ public class ParkingServiceImpl implements ParkingService {
         this.blackListCarRepository = blackListCarRepository;
     }
 
+    public ParkingServiceImpl(final CarRepository repository) {
+        this.repository = repository;
+        this.blackListCarRepository = null;
+    }
+
     @Override
     public RedirectView editCar(String number, Car sourceCar) {
         Car car = repository.findCarByRegistrationNumberContainingIgnoreCase(number);
@@ -64,6 +69,11 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Override
+    public List<Car> findAll() {
+        return repository.findAll();
+    }
+
+    @Override
     public RedirectView confirmCar(String number) {
         Car car = repository.findCarByRegistrationNumberContainingIgnoreCase(number);
         car.setChecker(true);
@@ -103,8 +113,8 @@ public class ParkingServiceImpl implements ParkingService {
     public ModelAndView findCars() {
         ModelAndView mav = new ModelAndView("list-cars");
         PaidTimeChecker checker = new PaidTimeChecker(repository);
-        checker.checkCarsPaidTime();
         List<Car> list = repository.findAll();
+        checker.checkCarsPaidTime(list,LocalDateTime.now());
         mav.addObject("cars", list);
 
         return mav;

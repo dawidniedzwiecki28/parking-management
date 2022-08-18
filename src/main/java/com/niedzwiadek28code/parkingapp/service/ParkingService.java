@@ -6,7 +6,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.List;
+
 public interface ParkingService {
+    List<Car> findAll();
 
     RedirectView confirmCar(String number);
 

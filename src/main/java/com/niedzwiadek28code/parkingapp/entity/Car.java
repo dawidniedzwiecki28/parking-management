@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -37,8 +38,8 @@ public class Car {
     }
 
     public Car(String registrationNumber,
-               boolean paymentStatus,
-               LocalDateTime arrivalDate) {
+               LocalDateTime arrivalDate,
+               boolean paymentStatus) {
         this.registrationNumber = registrationNumber;
         this.paymentStatus = paymentStatus;
         this.arrivalDate = arrivalDate;
@@ -106,8 +107,11 @@ public class Car {
     }
 
     @JsonIgnore
-    public boolean timeUpChecker() {
-        Duration duration = Duration.between(LocalDateTime.now(), this.departureDate);
+    public boolean timeUpChecker(LocalDateTime now) {
+        if (this.departureDate == null) {
+            return false;
+        }
+        Duration duration = Duration.between(now, this.departureDate);
         return (duration.isNegative());
     }
 }
