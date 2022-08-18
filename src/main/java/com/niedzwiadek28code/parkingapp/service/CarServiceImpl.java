@@ -1,6 +1,8 @@
 package com.niedzwiadek28code.parkingapp.service;
 
+import com.niedzwiadek28code.parkingapp.dao.BlackListCarRepository;
 import com.niedzwiadek28code.parkingapp.dao.CarRepository;
+import com.niedzwiadek28code.parkingapp.entity.BlackListCar;
 import com.niedzwiadek28code.parkingapp.entity.Car;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
@@ -13,84 +15,50 @@ import java.util.List;
 @Service
 public class CarServiceImpl implements CarService {
     private final CarRepository repository;
+    private final BlackListCarRepository blackListCarRepository;
 
-    public CarServiceImpl(final CarRepository repository) {
+    public CarServiceImpl(final CarRepository repository, final BlackListCarRepository blackListCarRepository) {
         this.repository = repository;
+        this.blackListCarRepository = blackListCarRepository;
     }
 
     @Override
-    public void updateExistCarForCreate(Car sourceCar) {
-        Car toUpdateCar = repository
-                .findCarByRegistrationNumberContainingIgnoreCase(
-                        sourceCar.getRegistrationNumber());
-        boolean blackList = toUpdateCar.isBlackList();
-        toUpdateCar.toUpdate(sourceCar);
-        toUpdateCar.setBlackList(blackList);
-        repository.save(toUpdateCar);
-    }
-
-    @Override
-    public void updateExistCarForEdit(Car sourceCar) {
-        Car toUpdateCar = repository
-                .findCarByRegistrationNumberContainingIgnoreCase(
-                        sourceCar.getRegistrationNumber());
-        toUpdateCar.toUpdate(sourceCar);
-        toUpdateCar.setActive(sourceCar.isActive());
-        repository.save(toUpdateCar);
-    }
-
-    @Override
-    public void createOrUpdateCar(Car sourceCar) {
-        if (!repository.existsByRegistrationNumberContainingIgnoreCase(sourceCar.getRegistrationNumber())) {
-            repository.save(sourceCar);
-        } else {
-            updateExistCarForCreate(sourceCar);
-        }
-    }
-
-    @Override
-    public RedirectView createOrEditCar(String number, Car sourceCar) {
+    public RedirectView editCar(String number, Car sourceCar) {
         Car car = repository.findCarByRegistrationNumberContainingIgnoreCase(number);
         if (!repository.existsByRegistrationNumberContainingIgnoreCase(sourceCar.getRegistrationNumber())) {
             repository.save(sourceCar);
             repository.delete(car);
         } else {
-            updateExistCarForEdit(sourceCar);
+            Car toUpdateCar = repository.findCarByRegistrationNumberContainingIgnoreCase(sourceCar.getRegistrationNumber());
+            toUpdateCar.toUpdate(sourceCar);
+            repository.save(toUpdateCar);
         }
         return new RedirectView("list");
     }
 
     @Override
-    public RedirectView showBlackListCar(Car sourceCar) {
-        if (repository.existsByRegistrationNumberContainingIgnoreCaseAndBlackListTrue(sourceCar.getRegistrationNumber())) {
-            createOrUpdateCar(sourceCar);
+    public RedirectView addCar(Car sourceCar) {
+        if (blackListCarRepository.existsByRegistrationNumberContainingIgnoreCase(sourceCar.getRegistrationNumber())) {
+            blackListCarRepository.delete(blackListCarRepository.findBlackListCarByRegistrationNumberContainingIgnoreCase(sourceCar.getRegistrationNumber()));
+            repository.save(sourceCar);
             return new RedirectView("blackListNotify");
         }
-        createOrUpdateCar(sourceCar);
+
+        if (repository.existsByRegistrationNumberContainingIgnoreCase(sourceCar.getRegistrationNumber())) {
+            System.out.println("That car is on the parking lof");
+        }else {
+            repository.save(sourceCar);
+        }
 
         return new RedirectView("list");
     }
 
     @Override
-    public RedirectView carDeactivation(String number) {
+    public RedirectView deleteCar(String number) {
         Car car = repository.findCarByRegistrationNumberContainingIgnoreCase(number);
         LocalDateTime dateTime = LocalDateTime.now();
         car.setDepartureDate(dateTime);
-        car.setChecker(false);
-        car.setActive(false);
-        repository.save(car);
-
-        return new RedirectView("list");
-    }
-
-    @Override
-    public RedirectView carDeactivationForCheck(String number) {
-        Car car = repository.findCarByRegistrationNumberContainingIgnoreCase(number);
-        LocalDateTime dateTime = LocalDateTime.now();
-        car.setDepartureDate(dateTime);
-        car.setChecker(false);
-        car.setActive(false);
-        repository.save(car);
+        repository.delete(car);
 
         return new RedirectView("checking");
     }
@@ -132,16 +100,12 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public ModelAndView findActiveCars() {
+    public ModelAndView findCars() {
         ModelAndView mav = new ModelAndView("list-cars");
         PaidTimePassChecker checker = new PaidTimePassChecker(repository);
-        List<Car> list = repository.findCarsByActiveTrue();
-        for (Car car : list) {
-            car.setChecker(false);
-            repository.save(car);
-        }
-        mav.addObject("cars", list);
         checker.checkCarsPaidTime();
+        List<Car> list = repository.findAll();
+        mav.addObject("cars", list);
 
         return mav;
     }
@@ -149,9 +113,30 @@ public class CarServiceImpl implements CarService {
     @Override
     public ModelAndView activeCarsForChecking() {
         ModelAndView mav = new ModelAndView("list-cars-for-check");
-        List<Car> carsForCheck = repository.findCarsByActiveTrueAndCheckerFalse();
+        List<Car> carsForCheck = repository.findCarsByCheckerFalse();
         mav.addObject("cars", carsForCheck);
 
         return mav;
+    }
+
+    @Override
+    public RedirectView addCarToBlackList(String number) {
+        BlackListCar blackListCar = new BlackListCar(number);
+        blackListCarRepository.save(blackListCar);
+
+        Car car = repository.findCarByRegistrationNumberContainingIgnoreCase(number);
+        repository.delete(car);
+
+        return new RedirectView("checking");
+    }
+
+    @Override
+    public RedirectView checkerCleaner() {
+        List<Car> list = repository.findAll();
+        for (Car car : list){
+            car.setChecker(false);
+            repository.save(car);
+        }
+        return new RedirectView("list");
     }
 }

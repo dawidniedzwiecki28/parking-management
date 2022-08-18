@@ -11,29 +11,29 @@
 </head>
 <body>
 <div class="container">
-    <h2>Dodaj pojazd</h2>
+    <h2>Add car</h2>
     <hr/>
     <!--/*@thymesVar id="car" type="com.niedzwiadek28code.parkingapp.entity.Car"*/-->
     <form th:action="@{/parking/saveCar}" th:object="${car}" method="post" class="form-control col-4 mb-4">
-        <label>nr rejestracyjny:</label>
+        <label>Registration number:</label>
         <input type="text" th:field="*{registrationNumber}" />
         <hr/>
-        <label>kraj:</label>
+        <label>Country:</label>
         <input type="text" th:field="*{country}" />
         <hr/>
-        <label>przyjazd:</label>
+        <label>Arrival:</label>
         <input type="datetime-local" th:field="*{arrivalDate}" required />
         <hr/>
-        <label>płatność:</label>
+        <label>Payment:</label>
         <input type="checkbox" th:field="*{paymentStatus}" />
         <hr/>
-        <label>odjazd:</label>
+        <label>Departure:</label>
         <input type="datetime-local" th:field="*{departureDate}" />
         <hr/>
-        <button class="btn btn-primary" type="submit">Zapisz</button>
+        <button class="btn btn-primary" type="submit">Save</button>
     </form>
     <hr/>
-    <a th:href="@{/parking/list}">Back to list</a>
+        <a th:href="@{/parking/list}">Back to list</a>
 
 </div>
 

@@ -10,11 +10,8 @@ import java.util.List;
 public interface CarRepository extends JpaRepository<Car, Integer> {
     Car findCarByRegistrationNumberContainingIgnoreCase(String registrationNumber);
 
-    List<Car> findCarsByActiveTrue();
-
-    List<Car> findCarsByActiveTrueAndCheckerFalse();
+    List<Car> findCarsByCheckerFalse();
 
     boolean existsByRegistrationNumberContainingIgnoreCase(String registrationNumber);
 
-    boolean existsByRegistrationNumberContainingIgnoreCaseAndBlackListTrue(String registrationNumber);
 }

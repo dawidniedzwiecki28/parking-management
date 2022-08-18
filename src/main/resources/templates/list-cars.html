@@ -15,21 +15,21 @@
 <body>
 <div class="container">
 
-    <h2>Samochody na parkingu</h2>
+    <h2>Cars in the parking lot</h2>
     <hr/>
-    <a th:href="@{/parking/addCarForm}" class="btn btn-primary mb-2">Dodaj</a>
-    <a th:href="@{/parking/checking}" class="btn btn-primary mb-2">Obchód</a>
+    <a th:href="@{/parking/addCarForm}" class="btn btn-primary mb-2">Add car</a>
+    <a th:href="@{/parking/checking}" class="btn btn-primary mb-2">Inspection</a>
 
     <table class="table table-bordered table-striped" id="car-table">
         <thead>
         <tr>
-            <th>Pojazd:</th>
-            <th>Kraj:</th>
-            <th>Płatność:</th>
-            <th>Przyjazd:</th>
-            <th>Odjazd:</th>
-            <th>IsTimeUp?:</th>
-            <th>Akcja:</th>
+            <th>Car:</th>
+            <th>Country:</th>
+            <th>Payment:</th>
+            <th>Arrival:</th>
+            <th>Departure:</th>
+            <th>TimeIsUp:</th>
+            <th>Action:</th>
         </tr>
         </thead>
         <tbody>
@@ -42,8 +42,7 @@
             <td th:text="${car.departureDate}"></td>
             <td th:text="${car.timeUp}"></td>
             <td>
-                <a th:href="@{/parking/showUpdateForm(number=${car.registrationNumber})}" class="btn btn-info">Edytuj</a>
-                <a th:href="@{/parking/deactivationCar(number=${car.registrationNumber})}" class="btn btn-info">Pojechał</a>
+                <a th:href="@{/parking/showUpdateForm(number=${car.registrationNumber})}" class="btn btn-info">Edit</a>
             </td>
 
         </tr>

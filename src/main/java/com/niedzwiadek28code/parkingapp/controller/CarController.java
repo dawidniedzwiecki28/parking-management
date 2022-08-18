@@ -17,7 +17,7 @@ public class CarController {
 
     @GetMapping({"/list"})
     public ModelAndView findActiveCars() {
-        return carServiceImpl.findActiveCars();
+        return carServiceImpl.findCars();
     }
 
     @GetMapping("/checking")
@@ -35,14 +35,9 @@ public class CarController {
         return carServiceImpl.showUpdateForm(number);
     }
 
-    @GetMapping("/deactivationCar")
-    public RedirectView carDeactivation(String number) {
-        return (carServiceImpl.carDeactivation(number));
-    }
-
     @GetMapping("/deactivationCarForCheck")
     public RedirectView carDeactivationForCheck(String number) {
-        return (carServiceImpl.carDeactivationForCheck(number));
+        return (carServiceImpl.deleteCar(number));
     }
 
     @GetMapping("/carConfirmation")
@@ -57,22 +52,20 @@ public class CarController {
 
     @PostMapping("/saveCar")
     public RedirectView showBlackListCar(@ModelAttribute Car sourceCar) {
-        return (carServiceImpl.showBlackListCar(sourceCar));
+        return (carServiceImpl.addCar(sourceCar));
     }
 
     @PostMapping("/editCar")
     public RedirectView createOrEditCar(@RequestParam String number, @ModelAttribute Car sourceCar) {
-        return (carServiceImpl.createOrEditCar(number, sourceCar));
+        return (carServiceImpl.editCar(number, sourceCar));
     }
-
-    @PutMapping("/saveCar")
-    public void updateExistCar(Car sourceCar) {
-        carServiceImpl.updateExistCarForCreate(sourceCar);
+    @GetMapping("/addToBlackList")
+    public RedirectView addToBlackLIst(@RequestParam String number){
+        return (carServiceImpl.addCarToBlackList(number));
     }
-
-    @PutMapping("/editCar")
-    public void editExistCar(Car sourceCar) {
-        carServiceImpl.updateExistCarForCreate(sourceCar);
+    @GetMapping("/checkerCleaner")
+    public RedirectView checkerCleaner(){
+        return (carServiceImpl.checkerCleaner());
     }
 
 }

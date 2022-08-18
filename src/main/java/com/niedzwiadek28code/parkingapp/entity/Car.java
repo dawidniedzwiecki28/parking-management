@@ -15,8 +15,6 @@ public class Car {
     private boolean paymentStatus;
     private LocalDateTime arrivalDate;
     private LocalDateTime departureDate;
-    private boolean active;
-    private boolean blackList;
     private boolean timeUp;
     private boolean checker;
 
@@ -30,8 +28,6 @@ public class Car {
         this.paymentStatus = paymentStatus;
         this.arrivalDate = arrivalDate;
         this.departureDate = departureDate;
-        this.active = true;
-        this.blackList = false;
     }
 
     public Car(String registrationNumber,
@@ -42,8 +38,6 @@ public class Car {
         this.country = country;
         this.paymentStatus = paymentStatus;
         this.arrivalDate = arrivalDate;
-        this.active = true;
-        this.blackList = false;
     }
 
     public Car(String registrationNumber,
@@ -55,7 +49,6 @@ public class Car {
     }
 
     public Car() {
-        this.active = true;
     }
 
     public String getRegistrationNumber() {
@@ -90,28 +83,12 @@ public class Car {
         this.departureDate = departureDate;
     }
 
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
     public boolean isPaymentStatus() {
         return paymentStatus;
     }
 
     public void setPaymentStatus(boolean paymentStatus) {
         this.paymentStatus = paymentStatus;
-    }
-
-    public boolean isBlackList() {
-        return blackList;
-    }
-
-    public void setBlackList(boolean blackList) {
-        this.blackList = blackList;
     }
 
     public boolean isTimeUp() {
@@ -138,8 +115,6 @@ public class Car {
                 ", paymentStatus=" + paymentStatus +
                 ", arrivalDate=" + arrivalDate +
                 ", departureDate=" + departureDate +
-                ", active=" + active +
-                ", blackList=" + blackList +
                 ", timeUp=" + timeUp +
                 ", checker=" + checker +
                 '}';
@@ -151,8 +126,6 @@ public class Car {
         this.paymentStatus = sourceCar.paymentStatus;
         this.arrivalDate = sourceCar.arrivalDate;
         this.departureDate = sourceCar.departureDate;
-        this.blackList = sourceCar.blackList;
-        this.setActive(true);
     }
 
     @JsonIgnore

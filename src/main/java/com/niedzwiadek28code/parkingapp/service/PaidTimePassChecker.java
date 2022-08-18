@@ -13,8 +13,9 @@ public class PaidTimePassChecker {
     }
 
     public void checkCarsPaidTime(){
-        List<Car> carList = repository.findCarsByActiveTrue();
+        List<Car> carList = repository.findAll();
         for (Car car : carList) {
+
             if(car.getDepartureDate()==null){
                 continue;
             }

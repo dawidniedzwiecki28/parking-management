@@ -15,19 +15,19 @@
 <body>
 <div class="container">
 
-    <h2>Samochody na parkingu</h2>
+    <h2>Csrs in the parking lot</h2>
     <hr/>
 
     <table class="table table-bordered table-striped" id="car-table">
         <thead>
         <tr>
-            <th>Pojazd:</th>
-            <th>Kraj:</th>
-            <th>Płatność:</th>
-            <th>Przyjazd:</th>
-            <th>Odjazd:</th>
-            <th>IsTimeUp?:</th>
-            <th>Akcja:</th>
+            <th>Car:</th>
+            <th>Country:</th>
+            <th>Payment:</th>
+            <th>Arrival:</th>
+            <th>Departure:</th>
+            <th>PaidTime</th>:</th>
+            <th>Action:</th>
         </tr>
         </thead>
         <tbody>
@@ -40,16 +40,16 @@
             <td th:text="${car.departureDate}"></td>
             <td th:text="${car.timeUp}"></td>
             <td>
-                <a th:href="@{/parking/showUpdateForm(number=${car.registrationNumber})}" class="btn btn-info">Edytuj</a>
-                <a th:href="@{/parking/carConfirmation(number=${car.registrationNumber})}" class="btn btn-info">Zgadza się</a>
-                <a th:href="@{/parking/deactivationCarForCheck(number=${car.registrationNumber})}" class="btn btn-info">Pojechał</a>
+                <a th:href="@{/parking/addToBlackList(number=${car.registrationNumber})}" class="btn btn-info">BlackList</a>
+                <a th:href="@{/parking/carConfirmation(number=${car.registrationNumber})}" class="btn btn-info">AllRight</a>
+                <a th:href="@{/parking/deactivationCarForCheck(number=${car.registrationNumber})}" class="btn btn-info">DroveAway</a>
             </td>
 
         </tr>
         </tbody>
     </table>
     <hr/>
-    <a th:href="@{/parking/list}">Back to list</a>
+    <a th:href="@{/parking/checkerCleaner}">Back to list</a>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.12.1/date-1.1.2/datatables.min.js"></script>

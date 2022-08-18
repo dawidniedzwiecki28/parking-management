@@ -7,20 +7,14 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 public interface CarService {
-    void updateExistCarForCreate(Car sourceCar);
-
-    void updateExistCarForEdit(Car sourceCar);
-
-    void createOrUpdateCar(Car sourceCar);
 
     RedirectView carConfirmation(String number);
 
-    RedirectView showBlackListCar(@ModelAttribute Car sourceCar);
+    RedirectView addCar(@ModelAttribute Car sourceCar);
 
-    RedirectView createOrEditCar(@RequestParam String number, @ModelAttribute Car sourceCar);
-    RedirectView carDeactivation(@RequestParam String number);
+    RedirectView editCar(@RequestParam String number, @ModelAttribute Car sourceCar);
 
-    RedirectView carDeactivationForCheck(@RequestParam String number);
+    RedirectView deleteCar(@RequestParam String number);
 
     ModelAndView showUpdateForm(@RequestParam String number);
 
@@ -28,7 +22,11 @@ public interface CarService {
 
     ModelAndView showBlackListNotify();
 
-    ModelAndView findActiveCars();
+    ModelAndView findCars();
 
     ModelAndView activeCarsForChecking();
+
+    RedirectView addCarToBlackList(@RequestParam String number);
+
+    RedirectView checkerCleaner();
 }
