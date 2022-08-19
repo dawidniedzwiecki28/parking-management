@@ -2,7 +2,6 @@ package com.niedzwiadek28code.parkingapp.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
@@ -12,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table
 public class Car {
@@ -24,6 +23,19 @@ public class Car {
     private LocalDateTime departureDate;
     private boolean timeUp;
     private boolean checker;
+
+    public Car(String registrationNumber, String country, LocalDateTime arrivalDate, boolean paymentStatus, LocalDateTime departureDate) {
+        this.registrationNumber = registrationNumber;
+        this.country = country;
+        this.arrivalDate = arrivalDate;
+        this.paymentStatus = paymentStatus;
+        this.departureDate = departureDate;
+    }
+
+    public Car(String registrationNumber, LocalDateTime arrivalDate) {
+        this.registrationNumber = registrationNumber;
+        this.arrivalDate = arrivalDate;
+    }
 
     public void toUpdate(Car sourceCar) {
         this.registrationNumber = sourceCar.registrationNumber;
