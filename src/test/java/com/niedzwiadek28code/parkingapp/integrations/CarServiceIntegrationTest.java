@@ -2,7 +2,6 @@ package com.niedzwiadek28code.parkingapp.integrations;
 
 import com.niedzwiadek28code.parkingapp.dao.CarRepository;
 import com.niedzwiadek28code.parkingapp.entity.Car;
-import com.niedzwiadek28code.parkingapp.service.PaidTimeChecker;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -12,7 +11,6 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @DataJpaTest
 public class CarServiceIntegrationTest {
@@ -20,9 +18,8 @@ public class CarServiceIntegrationTest {
     @Autowired
     private CarRepository repository;
 
-
     @Test
-    void should_PassCreateCar_when_databaseIncludeRightNumberOfCars(){
+    void should_PassCreateCar_when_databaseIncludeRightNumberOfCars() {
         // given
         initDB();
 
@@ -32,23 +29,6 @@ public class CarServiceIntegrationTest {
         // then
         assertEquals(4, cars.size());
 
-    }
-
-    @Test
-    void should_PassPaidTimeChecker_when_(){
-        // given
-        initDB();
-        final LocalDateTime LOCAL_DATE = LocalDateTime.of(2022, 8, 18, 12, 0);
-        PaidTimeChecker checker = new PaidTimeChecker(repository);
-
-        // when
-        List<Car> cars = repository.findAll();
-        checker.checkCarsPaidTime(cars,LOCAL_DATE);
-
-        // then
-        for (Car car : cars){
-            assertFalse(car.isTimeUp());
-        }
     }
 
     private void initDB() {
@@ -65,8 +45,7 @@ public class CarServiceIntegrationTest {
                 true,
                 LocalDateTime.of(2022, 8, 18, 12, 0));
         Car car4 = new Car("d",
-                LocalDateTime.of(2022, 8, 18, 9, 0),
-                false);
+                LocalDateTime.of(2022, 8, 18, 9, 0));
 
         repository.saveAll(asList(car1, car2, car3, car4));
 

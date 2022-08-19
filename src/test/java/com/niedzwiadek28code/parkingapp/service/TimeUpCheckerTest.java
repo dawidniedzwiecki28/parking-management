@@ -1,6 +1,7 @@
-package com.niedzwiadek28code.parkingapp.entity;
+package com.niedzwiadek28code.parkingapp.service;
 
-
+import com.niedzwiadek28code.parkingapp.entity.Car;
+import com.niedzwiadek28code.parkingapp.utils.TimeUpChecker;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -18,9 +19,10 @@ class TimeUpCheckerTest {
     void should_passTimeUpChecker_when_timeUpCheckerWorkingCorrectly(boolean expectedResult, Car car) {
         // given
         final LocalDateTime LOCAL_DATE = LocalDateTime.of(2022, 8, 18, 12, 0);
+        TimeUpChecker checker = new TimeUpChecker();
 
         // when
-        boolean result = car.timeUpChecker(LOCAL_DATE);
+        boolean result = checker.timeUpCheckerForTest(LOCAL_DATE, car.getDepartureDate());
 
         // then
         assertEquals(expectedResult, result);
@@ -51,8 +53,7 @@ class TimeUpCheckerTest {
         final Arguments arg4 = Arguments.of(
                 false,
                 new Car("a",
-                        LocalDateTime.of(2022, 8, 18, 9, 0),
-                        true)
+                        LocalDateTime.of(2022, 8, 18, 9, 0))
         );
 
         return Stream.of(arg1, arg2, arg3, arg4);

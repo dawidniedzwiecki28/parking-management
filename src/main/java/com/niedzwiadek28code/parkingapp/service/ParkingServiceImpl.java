@@ -4,6 +4,7 @@ import com.niedzwiadek28code.parkingapp.dao.BlacklistCarRepository;
 import com.niedzwiadek28code.parkingapp.dao.CarRepository;
 import com.niedzwiadek28code.parkingapp.entity.BlacklistCar;
 import com.niedzwiadek28code.parkingapp.entity.Car;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
@@ -11,7 +12,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
+@Slf4j
 @Service
 public class ParkingServiceImpl implements ParkingService {
     private final CarRepository repository;
@@ -45,7 +46,7 @@ public class ParkingServiceImpl implements ParkingService {
         }
 
         if (repository.existsByRegistrationNumberContainingIgnoreCase(sourceCar.getRegistrationNumber())) {
-            System.out.println("That car is on the parking lof");
+            log.info("That car already exist") ;
         } else {
             repository.save(sourceCar);
         }
@@ -107,9 +108,9 @@ public class ParkingServiceImpl implements ParkingService {
     @Override
     public ModelAndView findCars() {
         ModelAndView mav = new ModelAndView("list-cars");
-        PaidTimeChecker checker = new PaidTimeChecker(repository);
+        CarsPaidTimeChecker checker = new CarsPaidTimeChecker(repository);
         List<Car> list = repository.findAll();
-        checker.checkCarsPaidTime(list,LocalDateTime.now());
+        checker.checkCarsPaidTime(list);
         mav.addObject("cars", list);
 
         return mav;

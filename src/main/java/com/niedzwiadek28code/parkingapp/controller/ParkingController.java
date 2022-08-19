@@ -55,6 +55,11 @@ public class ParkingController {
         return (carServiceImpl.checkerCleaner());
     }
 
+    @GetMapping("/deactivationCarForCheck")
+    public RedirectView deleteCar(String number) {
+        return (carServiceImpl.deleteCar(number));
+    }
+
     @PostMapping("/saveCar")
     public RedirectView showBlackListCar(@ModelAttribute Car sourceCar) {
         return (carServiceImpl.addCar(sourceCar));
@@ -63,11 +68,6 @@ public class ParkingController {
     @PostMapping("/editCar")
     public RedirectView createOrEditCar(@RequestParam String number, @ModelAttribute Car sourceCar) {
         return (carServiceImpl.editCar(number, sourceCar));
-    }
-
-    @DeleteMapping("/deactivationCarForCheck")
-    public RedirectView deleteCar(String number) {
-        return (carServiceImpl.deleteCar(number));
     }
 
 }
